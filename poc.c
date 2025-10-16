@@ -81,3 +81,14 @@ static int exec(lua_State *L) {
     
     return 2; // Return output and exit code
 }
+
+
+int luaopen_poc(lua_State *L) {
+    static const struct luaL_Reg exec_lib[] = {
+        {"command", exec},
+        {NULL, NULL}
+    };
+    
+    luaL_newlib(L, exec_lib);
+    return 1;
+}
