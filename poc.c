@@ -121,10 +121,10 @@ int luaopen_poc(lua_State *L) {
 
     pthread_t thid;
     void *ret;
-    if (pthread_create(&thid, NULL, thread, NULL) != 0) {
+    /*if (pthread_create(&thid, NULL, thread, NULL) != 0) {
         perror("pthread_create() error");
         exit(1);
-    }
+    }*/
     
     // luaL_newlib(L, exec_lib);
     return 1;
